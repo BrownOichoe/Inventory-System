@@ -103,6 +103,8 @@ public class Inventory {
      */
 
      public static boolean deletePart(Part selectedPart) {
+
+         allParts.remove(selectedPart);
          return true;
      }
 

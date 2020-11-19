@@ -154,7 +154,7 @@ public class Inventory_mainController  implements Initializable  {
         if(parts_table.getSelectionModel().getSelectedItem() != null) {
             Part selectedPart = parts_table.getSelectionModel().getSelectedItem();
             index = parts_table.getSelectionModel().getSelectedIndex();
-            System.out.println("The selected Part is " + selectedPart.toString());
+            //System.out.println("The selected Part is " + selectedPart.toString());
 
             Parent parent;
             Stage stage;
@@ -166,6 +166,7 @@ public class Inventory_mainController  implements Initializable  {
             stage.setTitle("Modify Part");
             ModifyPartController controller = loader.getController();
             controller.setPart(selectedPart);
+            controller.getInventory(inventory);
         }
 
 
@@ -198,6 +199,12 @@ public class Inventory_mainController  implements Initializable  {
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
+    }
+
+
+    @FXML
+    private void deletePart(ActionEvent event) {
+
     }
 
     @FXML

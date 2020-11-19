@@ -28,6 +28,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.awt.desktop.OpenURIEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -78,11 +79,13 @@ public class ModifyPartController implements Initializable {
 
     Part part;
 
+    Inventory inventory;
+
     public void setPart(Part p) {
 
 
         this.part = p;
-        System.out.println("The Selected Part is " + this.part.toString());
+       // System.out.println("The Selected Part is " + this.part.toString());
         part_Id.setText(Integer.toString(part.getId()));
         part_Name.setText(part.getName());
         part_Price.setText(Double.toString(part.getPrice()));
@@ -112,6 +115,13 @@ public class ModifyPartController implements Initializable {
 
     }
 
+
+    public void getInventory(Inventory inv) {
+
+        this.inventory = inv;
+
+    }
+
     private Part getPart() {
         return part;
     }
@@ -124,9 +134,15 @@ public class ModifyPartController implements Initializable {
         textFields.forEach(textField -> {
             textField.textProperty().addListener((obs,old,niu)->{
                 // TODO here
-                textField.setText(niu);
-                textField.setText(niu);
-                setValues(textField);
+
+                try {
+                    textField.setText(niu);
+                    textField.setText(niu);
+                    setValues(textField);
+                }catch (NumberFormatException e){
+                    System.out.println("I got you error");
+                }
+
 
 
             });
@@ -141,7 +157,52 @@ public class ModifyPartController implements Initializable {
         }
         else if(ts.getId().equals(part_Name.getId())) {
             part.setName(ts.getText());
+        }else if(ts.getId().equals(part_Inv.getId())) {
+            part.setStock(Integer.parseInt(ts.getText()));
+        }else if(ts.getId().equals(part_Price.getId())) {
+            part.setPrice(Double.parseDouble(ts.getText()));
+        }else if(ts.getId().equals(part_Max.getId())){
+            part.setMax(Integer.parseInt(ts.getText()));
+        }else if(ts.getId().equals(part_Min.getId())){
+            part.setMin(Integer.parseInt(ts.getText()));
+        }else if( ts.getId().equals(part_machineId.getId())){
+
+               if(part instanceof InHouse && radio_in_house.isSelected()) {
+
+                   InHouse inHouse = (InHouse) part;
+                   inHouse.setMachineId(Integer.parseInt(ts.getText()));
+
+               }else if(part instanceof  Outsourced && radio_outsourced.isSelected()){
+                   Outsourced outsourced = (Outsourced) part;
+                   outsourced.setCompanyName(ts.getText());
+               }else if(part instanceof InHouse && !radio_in_house.isSelected()) {
+
+                   inventory.deletePart(part);
+                   part = new Outsourced(Integer.parseInt(part_Id.getText()),
+                           part_Name.getText(),
+                           Double.parseDouble(part_Price.getText()),
+                           Integer.parseInt(part_Inv.getText()),
+                           Integer.parseInt(part_Max.getText()),
+                           Integer.parseInt(part_Min.getText()),
+                           part_machineId.getText());
+
+
+
+               }else {
+                   inventory.deletePart(part);
+                   part = new InHouse(Integer.parseInt(part_Id.getText()),
+                           part_Name.getText(),
+                           Double.parseDouble(part_Price.getText()),
+                           Integer.parseInt(part_Inv.getText()),
+                           Integer.parseInt(part_Min.getText()),
+                           Integer.parseInt(part_Max.getText()),
+                           Integer.parseInt(part_machineId.getText()));
+               }
+
+
         }
+
+
     }
 
 

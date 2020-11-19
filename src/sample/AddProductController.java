@@ -26,12 +26,11 @@
 
 package sample;
 
-import javafx.event.ActionEvent;
+import java.io.IOException;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class AddProductController {
 
