@@ -80,15 +80,38 @@ public class Inventory_mainController  implements Initializable  {
     @FXML
     private Button add_part;
 
+    @FXML
+    private Button modify_part;
+
 
 
     Inventory inventory;
-
+    Part selectedPart;
+    int index;
 
 
     public void setInventory(Inventory v) {
         this.inventory = v;
     }
+
+    public void setSelectedPart(Part p) {
+        System.out.println("The index is: " + index + " and the Part is : " +  p);
+        inventory.updatePart(index,p);
+    }
+
+    /*public Part modifyPart() {
+
+
+        for (Part Row : this.inventory.getAllParts()) {
+            int index = parts_table.getItems().indexOf(Row);
+            if (parts_table.getSelectionModel().isSelected(index))
+                selectedPart = Row;
+        };
+
+        selectedPart = parts_table.getSelectionModel().getSelectedItem();
+        System.out.println(selectedPart.toString());
+        return selectedPart;
+    }*/
 
 
 
@@ -96,27 +119,30 @@ public class Inventory_mainController  implements Initializable  {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        parts_table.refresh();
         parts_table.setItems(this.inventory.getAllParts());
         part_id.setCellValueFactory(new PropertyValueFactory<Part,Integer>("id"));
         part_cost.setCellValueFactory(new PropertyValueFactory<Part , Double>("price"));
         part_level.setCellValueFactory(new PropertyValueFactory<Part, Integer>("stock"));
         part_Name.setCellValueFactory(new PropertyValueFactory<Part,String>("name"));
 
-        parts_table.refresh();
+
+
     }
 
 
     @FXML
     private void pushToAddPartsForm(ActionEvent event) throws IOException {
 
+
         Parent parent;
-        FXMLLoader loader =  new FXMLLoader(getClass().getResource("AddPart.fxml"));
+        Stage stage;
+        stage = (Stage) modify_part.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AddPart.fxml"));
         parent = loader.load();
-        Stage primaryStage = new Stage();
         Scene scene = new Scene(parent);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Add Part");
-        primaryStage.showAndWait();
+        stage.setScene(scene);
+        stage.setTitle("Add Part");
         AddPartController controller = loader.getController();
         controller.setInventory(this.inventory);
 
@@ -124,14 +150,33 @@ public class Inventory_mainController  implements Initializable  {
 
     @FXML
     private void pushToModifyPartsForm(ActionEvent event) throws IOException {
-        Parent Form = FXMLLoader.load(getClass().getResource("ModifyPart.fxml"));
-        Scene  scene = new Scene(Form);
-        Stage  stage = new Stage();
-        stage.setTitle("Modify Parts");
-        stage.setScene(scene);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
+
+        if(parts_table.getSelectionModel().getSelectedItem() != null) {
+            Part selectedPart = parts_table.getSelectionModel().getSelectedItem();
+            index = parts_table.getSelectionModel().getSelectedIndex();
+            System.out.println("The selected Part is " + selectedPart.toString());
+
+            Parent parent;
+            Stage stage;
+            stage = (Stage) modify_part.getScene().getWindow();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifyPart.fxml"));
+            parent = loader.load();
+            Scene scene = new Scene(parent);
+            stage.setScene(scene);
+            stage.setTitle("Modify Part");
+            ModifyPartController controller = loader.getController();
+            controller.setPart(selectedPart);
+        }
+
+
+
+       System.out.println("Please select Item to Continue");
+
+
+
     }
+
+
 
     @FXML
     private void pushToAddProductsForm() throws IOException {

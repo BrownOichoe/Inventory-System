@@ -17,8 +17,11 @@
 
 package sample;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -26,8 +29,12 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
 
-public class ModifyPartController {
+public class ModifyPartController implements Initializable {
 
     @FXML
     private RadioButton radio_in_house;
@@ -45,16 +52,115 @@ public class ModifyPartController {
     @FXML
     private Button cancel_part;
 
+    @FXML
+    private TextField part_Id;
+
+    @FXML
+    private TextField part_Name;
+
+    @FXML
+    private TextField  part_Max;
+
+    @FXML
+    private TextField  part_Min;
+
+    @FXML
+    private TextField  part_Price;
+
+    @FXML
+    private TextField  part_Inv;
+
+    @FXML
+    private Button save_part;
 
 
-    public void In_houseListener() {
-        if(radio_in_house.isSelected())
+
+
+    Part part;
+
+    public void setPart(Part p) {
+
+
+        this.part = p;
+        System.out.println("The Selected Part is " + this.part.toString());
+        part_Id.setText(Integer.toString(part.getId()));
+        part_Name.setText(part.getName());
+        part_Price.setText(Double.toString(part.getPrice()));
+        part_Max.setText(Integer.toString(part.getMax()));
+        part_Min.setText(Integer.toString(part.getMin()));
+        part_Inv.setText(Integer.toString(part.getStock()));
+
+
+
+        if(part instanceof InHouse) {
+
+            radio_in_house.setSelected(true);
+            radio_outsourced.setSelected(false);
+            InHouse inHouse = (InHouse) part;
             radio_option.setText("Machine ID");
-        part_machineId.promptTextProperty().setValue("Machine ID");
-        radio_outsourced.setSelected(false);
+            part_machineId.setText(Integer.toString(inHouse.getMachineId()));
+            part_machineId.promptTextProperty().setValue("Machine ID");
+
+        }else {
+            radio_in_house.setSelected(false);
+            radio_outsourced.setSelected(true);
+            Outsourced outsourced = (Outsourced) part;
+            radio_option.setText("Company Name");
+            part_machineId.setText(outsourced.getCompanyName());
+            part_machineId.promptTextProperty().setValue("Company Name");
+        }
+
     }
 
-    public void outSourcedListener(){
+    private Part getPart() {
+        return part;
+    }
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+        List<TextField> textFields = Arrays.asList(part_Name,part_Price,part_Inv,part_Min,part_Max,part_machineId);
+        textFields.forEach(textField -> {
+            textField.textProperty().addListener((obs,old,niu)->{
+                // TODO here
+                textField.setText(niu);
+                textField.setText(niu);
+                setValues(textField);
+
+
+            });
+        });
+
+
+    }
+
+    public void setValues(TextField ts) {
+        if(ts.getId().equals(part_Id.getId())) {
+              part.setId(Integer.parseInt(ts.getText()));
+        }
+        else if(ts.getId().equals(part_Name.getId())) {
+            part.setName(ts.getText());
+        }
+    }
+
+
+    @FXML
+    private void In_houseListener() {
+
+
+
+        if(radio_in_house.isSelected())
+            radio_option.setText("Machine ID");
+        part_Id.setText(Integer.toString(part.getId()));
+        part_machineId.promptTextProperty().setValue("Machine ID");
+        radio_outsourced.setSelected(false);
+
+    }
+
+
+    @FXML
+    private void outSourcedListener(){
         if(radio_outsourced.isSelected())
             radio_option.setText("Company Name");
             part_machineId.promptTextProperty().setValue("Company Name");
@@ -62,8 +168,42 @@ public class ModifyPartController {
 
     }
 
-    public void HideModifyPartsForm() {
-        Stage stage = (Stage) cancel_part.getScene().getWindow();
-        stage.close();
+    @FXML
+    private void HideModifyPartsForm() throws IOException {
+        Stage stage;
+        Parent root;
+        stage=(Stage) cancel_part.getScene().getWindow();
+        //load up OTHER FXML document
+        FXMLLoader loader=new FXMLLoader();
+        root = loader.load(getClass().getResource("Inventory_main.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+    }
+
+    @FXML
+    private void modifyPart() {
+
+
+
+    }
+
+
+
+
+    @FXML
+    private void SaveModifiedPart() throws IOException {
+
+        Parent parent;
+        Stage stage;
+        stage = (Stage) save_part.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Inventory_main.fxml"));
+        parent = loader.load();
+        Scene scene = new Scene(parent);
+        stage.setScene(scene);
+        stage.setTitle("Inventory");
+        Inventory_mainController controller = loader.getController();
+        controller.setSelectedPart(part);
     }
 }

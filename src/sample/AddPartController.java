@@ -38,6 +38,7 @@ import java.net.URL;
 import java.nio.charset.IllegalCharsetNameException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 
@@ -93,6 +94,7 @@ public class AddPartController implements Initializable {
 
 
     Inventory inventory;
+    private int Id;
 
 
 
@@ -102,12 +104,16 @@ public class AddPartController implements Initializable {
 
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {}
+    public void initialize(URL url, ResourceBundle rb) {
+        Id = generateUniqueNumber();
+        part_id.setText(Integer.toString(Id));
+    }
 
 
     @FXML
-    private void In_houseListener() {
+    private void In_houseListener(ActionEvent event) {
         if(radio_in_house.isSelected())
+
             radio_option.setText("Machine ID");
             part_machineId.promptTextProperty().setValue("Machine ID");
 
@@ -115,8 +121,9 @@ public class AddPartController implements Initializable {
     }
 
     @FXML
-    private void outSourcedListener(){
+    private void outSourcedListener(ActionEvent event){
         if(radio_outsourced.isSelected())
+
             radio_option.setText("Company Name");
             part_machineId.clear();
             part_machineId.promptTextProperty().setValue("Company Name");
@@ -129,20 +136,33 @@ public class AddPartController implements Initializable {
 
 
     private void AddPart(Inventory inv) throws IOException {
-        FXMLLoader loader= new FXMLLoader(getClass().getResource(
-                "Inventory_main.fxml"));
-        Parent root;
-        root = loader.load();
+
+        Parent parent;
+        Stage stage;
+        stage = (Stage) save_part.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Inventory_main.fxml"));
+        parent = loader.load();
+        Scene scene = new Scene(parent);
+        stage.setScene(scene);
+        stage.setTitle("Add Part");
         Inventory_mainController controller = loader.getController();
-        controller.setInventory(inv);
+        controller.setInventory(this.inventory);
+
 
     }
 
 
 
-    public void HideAddPartsForm() {
-        Stage stage = (Stage) save_part.getScene().getWindow();
-        stage.close();
+    public void HideAddPartsForm() throws IOException {
+        Stage stage;
+        Parent root;
+        stage=(Stage) cancel_part.getScene().getWindow();
+        //load up OTHER FXML document
+        FXMLLoader loader=new FXMLLoader();
+        root = loader.load(getClass().getResource("Inventory_main.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
@@ -156,14 +176,19 @@ public class AddPartController implements Initializable {
 
                  if(radio_in_house.isSelected() && validationPassed(textFields)) {
                      if (checkMinMAxInv(Integer.parseInt(part_Min.getText()), Integer.parseInt(part_Max.getText()),Integer.parseInt(part_Inv.getText()))) {
-                         //System.out.println(inhouse.toString());
 
-                         p = new InHouse(1, part_Name.getText(), Double.valueOf(part_price.getText()), Integer.parseInt(part_Inv.getText()), Integer.parseInt(part_Max.getText()), Integer.parseInt(part_Min.getText()), Integer.parseInt(part_machineId.getText())) ;
+
+                         p = new InHouse(Id,
+                                 part_Name.getText(),
+                                 Double.valueOf(part_price.getText()),
+                                 Integer.parseInt(part_Inv.getText()),
+                                 Integer.parseInt(part_Max.getText()),
+                                 Integer.parseInt(part_Min.getText()),
+                                 Integer.parseInt(part_machineId.getText())) ;
 
                          inventory.addPart(p);
                          AddPart(inventory);
-                         //System.out.println(inventory.getAllParts().toString());
-                         HideAddPartsForm();
+
 
                      } else {
                          System.out.println("Min should be less than Max; and Inv should be between those two values");
@@ -173,8 +198,8 @@ public class AddPartController implements Initializable {
 
                  }else if (radio_outsourced.isSelected() && validationPassed(textFields)) {
                      if (checkMinMAxInv(Integer.parseInt(part_Min.getText()), Integer.parseInt(part_Max.getText()),Integer.parseInt(part_Inv.getText()))) {
-                         //System.out.println(outsourced.toString());
-                         p = new Outsourced(1,
+
+                         p = new Outsourced(Id,
                                  part_Name.getText(),
                                  Double.valueOf(part_price.getText()),
                                  Integer.parseInt(part_Inv.getText()),
@@ -183,8 +208,7 @@ public class AddPartController implements Initializable {
                                  part_machineId.getText());
                          inventory.addPart(p);
                          AddPart(inventory);
-                         //System.out.println(inventory.getAllParts().toString());
-                         HideAddPartsForm();
+
 
                      } else {
                          System.out.println("Min should be less than Max; and Inv should be between those two values");
@@ -288,8 +312,20 @@ public class AddPartController implements Initializable {
     }
 
     @FXML
-    private void generateUniqueNumber() {
+    private Integer generateUniqueNumber() {
 
+        Random ints = new Random();
+        Integer Id = ints.nextInt(999999);
+
+         inventory.getAllParts().forEach((item) -> {
+             System.out.println(item.getId());
+             if (item.getId()  == Id ){
+                 ints.nextInt();
+             };
+
+         });
+
+        return Id;
     }
 
     @FXML

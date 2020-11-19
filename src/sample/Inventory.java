@@ -84,6 +84,8 @@ public class Inventory {
 
     public static void updatePart(int index,Part selectedPart) {
 
+        allParts.set(index,selectedPart);
+
     }
 
     /**
