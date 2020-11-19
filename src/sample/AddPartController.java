@@ -18,6 +18,7 @@
 
 package sample;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +35,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.IllegalCharsetNameException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -88,9 +90,15 @@ public class AddPartController implements Initializable {
 
 
 
-    private Part addedPart;
+
 
     Inventory inventory;
+
+
+
+    public void setInventory(Inventory v) {
+        this.inventory = v;
+    }
 
 
     @Override
@@ -120,20 +128,21 @@ public class AddPartController implements Initializable {
 
 
 
-    private void AddPart(Part p) throws IOException {
+    private void AddPart(Inventory inv) throws IOException {
         FXMLLoader loader= new FXMLLoader(getClass().getResource(
                 "Inventory_main.fxml"));
         Parent root;
         root = loader.load();
         Inventory_mainController controller = loader.getController();
-        controller.AddPart(p);
+        controller.setInventory(inv);
 
     }
 
 
-    @FXML
-    private void HideAddPartsForm() {
-        save_part.getScene().getWindow().hide();
+
+    public void HideAddPartsForm() {
+        Stage stage = (Stage) save_part.getScene().getWindow();
+        stage.close();
     }
 
     @FXML
@@ -141,7 +150,7 @@ public class AddPartController implements Initializable {
 
         List<TextField> textFields = Arrays.asList(part_Name,part_price,part_Inv,part_Min,part_Max,part_machineId);
 
-
+             Part p;
              if(!checkIfEmpty(textFields)) {
 
 
@@ -149,9 +158,10 @@ public class AddPartController implements Initializable {
                      if (checkMinMAxInv(Integer.parseInt(part_Min.getText()), Integer.parseInt(part_Max.getText()),Integer.parseInt(part_Inv.getText()))) {
                          //System.out.println(inhouse.toString());
 
-                         this.addedPart = new InHouse(1, part_Name.getText(), Double.valueOf(part_price.getText()), Integer.parseInt(part_Inv.getText()), Integer.parseInt(part_Max.getText()), Integer.parseInt(part_Min.getText()), Integer.parseInt(part_machineId.getText())) ;
+                         p = new InHouse(1, part_Name.getText(), Double.valueOf(part_price.getText()), Integer.parseInt(part_Inv.getText()), Integer.parseInt(part_Max.getText()), Integer.parseInt(part_Min.getText()), Integer.parseInt(part_machineId.getText())) ;
 
-                         AddPart(this.addedPart);
+                         inventory.addPart(p);
+                         AddPart(inventory);
                          //System.out.println(inventory.getAllParts().toString());
                          HideAddPartsForm();
 
@@ -164,15 +174,15 @@ public class AddPartController implements Initializable {
                  }else if (radio_outsourced.isSelected() && validationPassed(textFields)) {
                      if (checkMinMAxInv(Integer.parseInt(part_Min.getText()), Integer.parseInt(part_Max.getText()),Integer.parseInt(part_Inv.getText()))) {
                          //System.out.println(outsourced.toString());
-                         this.addedPart = new Outsourced(1,
+                         p = new Outsourced(1,
                                  part_Name.getText(),
                                  Double.valueOf(part_price.getText()),
                                  Integer.parseInt(part_Inv.getText()),
                                  Integer.parseInt(part_Max.getText()),
                                  Integer.parseInt(part_Min.getText()),
                                  part_machineId.getText());
-                         //inventory.addPart(this.addedPart);
-                         AddPart(this.addedPart);
+                         inventory.addPart(p);
+                         AddPart(inventory);
                          //System.out.println(inventory.getAllParts().toString());
                          HideAddPartsForm();
 

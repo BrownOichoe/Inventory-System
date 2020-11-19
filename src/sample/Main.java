@@ -18,12 +18,18 @@ public class Main extends Application  {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("Inventory_main.fxml"));
+        Inventory inv = new Inventory();
+        /*Parent root = FXMLLoader.load(getClass().getResource("Inventory_main.fxml"));
         primaryStage.setTitle("Inventory");
         primaryStage.setScene(new Scene(root, 940, 600));
-
-
-
+        */
+        FXMLLoader loader =  new FXMLLoader(getClass().getResource("Inventory_main.fxml"));
+        Parent parent;
+        parent = loader.load();
+        primaryStage.setTitle("Inventory");
+        primaryStage.setScene(new Scene(parent, 940, 600));
+        Inventory_mainController controller = loader.getController();
+        controller.setInventory(inv);
         primaryStage.show();
     }
 

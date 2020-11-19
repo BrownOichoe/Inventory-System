@@ -80,72 +80,50 @@ public class Inventory_mainController  implements Initializable  {
     @FXML
     private Button add_part;
 
-    private ObservableList<Part> parts = FXCollections.observableArrayList();
-
-    Inventory inventory = new Inventory();
 
 
-    public void AddPart(Part p) {
-
-        if (p != null) {
-            this.inventory.addPart(p);
-
-            //System.out.println("From Main Controller: "+ p.toString());
-           // inventory.addPart(p);
-           // System.out.println("This item form Inventory: " + this.inventory.toString());
-            parts.setAll(inventory.getAllParts());
-            System.out.println("(2) This item form Parts: " + parts.toString());
-        } else {
-            System.out.println("This is null");
-        }
+    Inventory inventory;
 
 
+
+    public void setInventory(Inventory v) {
+        this.inventory = v;
     }
 
 
 
 
-    private ObservableList<Part> getParts()  {
-
-
-        parts.setAll(inventory.getAllParts());
-        System.out.println("(1) This item form Parts: " + parts.toString());
-        return parts;
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       createPartsTable();
-
-    }
-
-    private void createPartsTable() {
-
+        parts_table.setItems(this.inventory.getAllParts());
         part_id.setCellValueFactory(new PropertyValueFactory<Part,Integer>("id"));
         part_cost.setCellValueFactory(new PropertyValueFactory<Part , Double>("price"));
         part_level.setCellValueFactory(new PropertyValueFactory<Part, Integer>("stock"));
         part_Name.setCellValueFactory(new PropertyValueFactory<Part,String>("name"));
 
-        parts_table.setItems(getParts());
+        parts_table.refresh();
     }
-
 
 
     @FXML
     private void pushToAddPartsForm(ActionEvent event) throws IOException {
 
-        Parent root = FXMLLoader.load(getClass().getResource("AddPart.fxml"));
-        Scene scene = new Scene(root);
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(add_part.getScene().getWindow());
-        stage.setScene(scene);
-        stage.showAndWait();
+        Parent parent;
+        FXMLLoader loader =  new FXMLLoader(getClass().getResource("AddPart.fxml"));
+        parent = loader.load();
+        Stage primaryStage = new Stage();
+        Scene scene = new Scene(parent);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Add Part");
+        primaryStage.showAndWait();
+        AddPartController controller = loader.getController();
+        controller.setInventory(this.inventory);
 
     }
 
     @FXML
-    private void pushToModifyPartsForm() throws IOException {
+    private void pushToModifyPartsForm(ActionEvent event) throws IOException {
         Parent Form = FXMLLoader.load(getClass().getResource("ModifyPart.fxml"));
         Scene  scene = new Scene(Form);
         Stage  stage = new Stage();
