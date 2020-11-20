@@ -25,6 +25,7 @@
 package sample;
 
 
+import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -42,6 +43,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 
 public class Inventory_mainController  implements Initializable  {
@@ -81,6 +83,10 @@ public class Inventory_mainController  implements Initializable  {
 
     @FXML
     private Button modify_part;
+
+    @FXML
+    private Label table_message;
+
 
 
 
@@ -141,38 +147,28 @@ public class Inventory_mainController  implements Initializable  {
 
 
 
-                if(isNumeric(part_search_field.getText()) && !part_search_field.getText().isEmpty()) {
-                    ObservableList<Part> foundItems = FXCollections.observableArrayList();
+                ObservableList<Part> foundItems = FXCollections.observableArrayList();
 
-                    try{
-                        Part p = inventory.lookupPart(Integer.parseInt(part_search_field.getText()));
+                if(isNumeric(part_search_field.getText()) && !part_search_field.getText().isEmpty() ) {
+                    int number = Integer.parseInt(part_search_field.getText());
+                    Part p = inventory.lookupPart(number);
 
+                    if(p == null){
+                        System.out.println("Table is empty");
+                        table_message.setText("Table is empty");
+                        parts_table.setItems(null);
+                        parts_table.setPlaceholder(new Label("Part Not Found"));
+                    }else {
 
-                            System.out.println("From Table: " + p);
-                            foundItems.add(p);
-                            parts_table.setItems(foundItems);
-
-
-
-                    }catch (IndexOutOfBoundsException e){
-
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Information Dialog");
-                            alert.setHeaderText("Error!");
-                            alert.setContentText("Part not found");
-                            alert.showAndWait();
+                        foundItems.add(p);
+                        parts_table.setItems(foundItems);
 
                     }
-
-
-
-
 
                 } else if (!isNumeric(part_search_field.getText()) && !part_search_field.getText().isEmpty()){
                     parts_table.setItems(inventory.lookupPart(part_search_field.getText()));
                 }else {
                     parts_table.setItems(inventory.getAllParts());
-                   // System.out.println("Part not found");
                 }
 
 
@@ -215,7 +211,7 @@ public class Inventory_mainController  implements Initializable  {
         if(parts_table.getSelectionModel().getSelectedItem() != null) {
             Part selectedPart = parts_table.getSelectionModel().getSelectedItem();
             index = parts_table.getSelectionModel().getSelectedIndex();
-            //System.out.println("The selected Part is " + selectedPart.toString());
+
 
             Parent parent;
             Stage stage;
@@ -265,7 +261,11 @@ public class Inventory_mainController  implements Initializable  {
 
     @FXML
     private void deletePart(ActionEvent event) {
+          Part selectedPart = parts_table.getSelectionModel().getSelectedItem();
+          System.out.println("Deleted: " + selectedPart.toString());
 
+          parts_table.getItems().remove(selectedPart);
+          parts_table.refresh();
     }
 
     @FXML

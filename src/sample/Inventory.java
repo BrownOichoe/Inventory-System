@@ -42,7 +42,8 @@ public class Inventory {
      */
 
     public static void addProduct(Product newProduct) {
-           allProducts.add(newProduct);
+        if( newProduct != null)
+             allProducts.add(newProduct);
     }
 
     /**
@@ -54,29 +55,13 @@ public class Inventory {
     public static Part lookupPart(int partId) {
 
 
-        ObservableList<Part> filteredParts = FXCollections.observableArrayList();
-        FilteredList<Part> filteredData = new FilteredList<>(allParts, p -> true);
-        filteredData.setPredicate(filteredPart -> {
-            Integer Id = Integer.valueOf(partId);
-            if (Id == null || Id.toString().isEmpty()){
+        for (Part p : allParts)
+        {
+            if (p.getId() == partId)
+                return p;
+        }
+        return null;
 
-            }
-            if (filteredPart.getId() == Id ) {
-
-                return true;
-            } else {
-
-                return false;
-
-            }
-
-        });
-
-
-
-        System.out.println(filteredData.get(0));
-        filteredParts.setAll(filteredData);
-       return filteredParts.get(0);
     }
 
     /**
@@ -85,6 +70,11 @@ public class Inventory {
      */
 
     public static Product lookupProduct(int productId) {
+        for (Product p : allProducts)
+        {
+            if (p.getId() == productId)
+                return p;
+        }
         return null;
     }
 
@@ -143,7 +133,7 @@ public class Inventory {
      */
 
     public static void updateProduct(int index,Product newProduct) {
-
+          allProducts.set(index, newProduct);
     }
 
     /**
@@ -163,6 +153,7 @@ public class Inventory {
      */
 
     public static boolean deleteProduct(Product selectedProduct) {
+        allParts.remove(selectedProduct);
         return true;
     }
 
