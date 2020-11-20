@@ -13,6 +13,10 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.scene.control.Alert;
+
+import java.util.ArrayList;
 
 public class Inventory {
 
@@ -46,8 +50,33 @@ public class Inventory {
      * This looks up part using id
      */
 
+
     public static Part lookupPart(int partId) {
-       return null;
+
+
+        ObservableList<Part> filteredParts = FXCollections.observableArrayList();
+        FilteredList<Part> filteredData = new FilteredList<>(allParts, p -> true);
+        filteredData.setPredicate(filteredPart -> {
+            Integer Id = Integer.valueOf(partId);
+            if (Id == null || Id.toString().isEmpty()){
+
+            }
+            if (filteredPart.getId() == Id ) {
+
+                return true;
+            } else {
+
+                return false;
+
+            }
+
+        });
+
+
+
+        System.out.println(filteredData.get(0));
+        filteredParts.setAll(filteredData);
+       return filteredParts.get(0);
     }
 
     /**
@@ -64,14 +93,34 @@ public class Inventory {
      * This looks up part using name
      */
 
+
     public static ObservableList<Part> lookupPart(String partName) {
-        return null;
+
+        ObservableList<Part> filteredParts = FXCollections.observableArrayList();
+        FilteredList<Part> filteredData = new FilteredList<>(allParts, p -> true);
+        filteredData.setPredicate(filteredPart -> {
+            if (partName == null || partName.isEmpty()) {
+
+
+                return true;
+            }
+
+            if (filteredPart.getName().contains(partName)) {
+
+                return true;
+            } else {
+
+                return false;
+
+            }
+
+        });
+
+        filteredParts.setAll(filteredData);
+        return filteredParts;
     }
 
-    /**
-     * lookupProduct-name method
-     * This looks up product using name
-     */
+
 
     public static ObservableList<Product> lookupProduct(String productName) {
         return null;

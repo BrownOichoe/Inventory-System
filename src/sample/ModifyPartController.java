@@ -27,8 +27,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.awt.desktop.OpenURIEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
@@ -132,12 +130,12 @@ public class ModifyPartController implements Initializable {
 
         List<TextField> textFields = Arrays.asList(part_Name,part_Price,part_Inv,part_Min,part_Max,part_machineId);
         textFields.forEach(textField -> {
-            textField.textProperty().addListener((obs,old,niu)->{
+            textField.textProperty().addListener((obs,old,newWord)->{
                 // TODO here
 
                 try {
-                    textField.setText(niu);
-                    textField.setText(niu);
+                    textField.setText(newWord);
+                    textField.setText(newWord);
                     setValues(textField);
                 }catch (NumberFormatException e){
                     System.out.println("I got you error");

@@ -27,22 +27,20 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -71,7 +69,8 @@ public class Inventory_mainController  implements Initializable  {
     private TableColumn<Part, Double> part_cost;
 
 
-
+    @FXML
+    private TextField part_search_field;
 
     @FXML
     private Button exit_main;
@@ -87,7 +86,9 @@ public class Inventory_mainController  implements Initializable  {
 
     Inventory inventory;
     Part selectedPart;
+    String Searchitem = " ";
     int index;
+
 
 
     public void setInventory(Inventory v) {
@@ -99,20 +100,29 @@ public class Inventory_mainController  implements Initializable  {
         inventory.updatePart(index,p);
     }
 
-    /*public Part modifyPart() {
 
 
-        for (Part Row : this.inventory.getAllParts()) {
-            int index = parts_table.getItems().indexOf(Row);
-            if (parts_table.getSelectionModel().isSelected(index))
-                selectedPart = Row;
-        };
+    @FXML
+    void SearchTable(String searchitem) {
 
-        selectedPart = parts_table.getSelectionModel().getSelectedItem();
-        System.out.println(selectedPart.toString());
-        return selectedPart;
-    }*/
 
+
+
+        boolean found = false;
+
+        try{
+            int itemNumber = Integer.parseInt(searchitem);
+            for(Part p: inventory.getAllParts()){
+
+                if(p.getId() == itemNumber){
+
+                    found=true;
+                }
+            }
+        }catch (NumberFormatException e) {
+
+        }
+    }
 
 
 
@@ -127,9 +137,60 @@ public class Inventory_mainController  implements Initializable  {
         part_Name.setCellValueFactory(new PropertyValueFactory<Part,String>("name"));
 
 
+        part_search_field.textProperty().addListener((Obs,oldText,newText) -> {
+
+
+
+                if(isNumeric(part_search_field.getText()) && !part_search_field.getText().isEmpty()) {
+                    ObservableList<Part> foundItems = FXCollections.observableArrayList();
+
+                    try{
+                        Part p = inventory.lookupPart(Integer.parseInt(part_search_field.getText()));
+
+
+                            System.out.println("From Table: " + p);
+                            foundItems.add(p);
+                            parts_table.setItems(foundItems);
+
+
+
+                    }catch (IndexOutOfBoundsException e){
+
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Information Dialog");
+                            alert.setHeaderText("Error!");
+                            alert.setContentText("Part not found");
+                            alert.showAndWait();
+
+                    }
+
+
+
+
+
+                } else if (!isNumeric(part_search_field.getText()) && !part_search_field.getText().isEmpty()){
+                    parts_table.setItems(inventory.lookupPart(part_search_field.getText()));
+                }else {
+                    parts_table.setItems(inventory.getAllParts());
+                   // System.out.println("Part not found");
+                }
+
+
+
+
+        });
 
     }
 
+
+    public static boolean isNumeric(String str)
+    {
+        for (char c : str.toCharArray())
+        {
+            if (!Character.isDigit(c)) return false;
+        }
+        return true;
+    }
 
     @FXML
     private void pushToAddPartsForm(ActionEvent event) throws IOException {
