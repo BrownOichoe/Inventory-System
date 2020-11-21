@@ -4,14 +4,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="650" prefWidth="965.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ModifyProductController">
+<AnchorPane prefHeight="650" prefWidth="965.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.View_Controller.ModifyProductController">
     <children>
 
         <VBox alignment="CENTER" spacing="20">
             <VBox style=" -fx-border-color:gray; -fx-border-width: 2; -fx-border-style: solid; -fx-border-radius: 5 5 5 5;">
                 <HBox spacing="550">
                     <Label prefWidth="100">Modify Product </Label>
-                    <TextField prefWidth="170" promptText="Search by Part ID or Name" style="-fx-prompt-text-fill: gray;"></TextField>
+                    <TextField prefWidth="170"  fx:id="search_part" onAction="#setSearch_part" promptText="Search by Part ID or Name" style="-fx-prompt-text-fill: gray;"></TextField>
                     <padding>
                         <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
                     </padding>
@@ -27,51 +27,51 @@
                                 <Label>Max</Label>
                             </VBox>
                             <VBox prefHeight="350" spacing="30">
-                                <TextField prefWidth="100"  promptText="1" style="-fx-prompt-text-fill: gray;"/>
-                                <TextField prefHeight="27.0" prefWidth="205.0" />
-                                <TextField prefWidth="100" />
-                                <TextField prefHeight="27.0" prefWidth="137.0" />
+                                <TextField fx:id="product_id" prefWidth="100"  editable="false" promptText="1" style="-fx-prompt-text-fill: gray;"/>
+                                <TextField fx:id="product_name" prefHeight="27.0" prefWidth="205.0" />
+                                <TextField fx:id="product_inv" prefWidth="100" />
+                                <TextField fx:id="product_price" prefHeight="27.0" prefWidth="137.0" />
                                 <HBox spacing="10">
-                                    <TextField prefHeight="27.0" prefWidth="72.0" />
+                                    <TextField fx:id="product_max" prefHeight="27.0" prefWidth="72.0" />
                                     <Label>
                                         Min
                                         <padding>
                                             <Insets bottom="0.0" left="0.0" right="0.0" top="4.0" />
                                         </padding>
                                     </Label>
-                                    <TextField prefHeight="27.0" prefWidth="88.0" />
+                                    <TextField fx:id="product_min" prefHeight="27.0" prefWidth="88.0" />
                                 </HBox>
                             </VBox>
                         </HBox>
                     </VBox>
                     <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="432.0" spacing="20">
-                        <TableView prefHeight="300.0" prefWidth="400.0">
+                        <TableView fx:id="partTableView" prefHeight="300.0" prefWidth="400.0">
                             <columns>
-                                <TableColumn prefWidth="75.0" text="Part ID" />
-                                <TableColumn prefWidth="75.0" text="Part Name" />
-                                <TableColumn prefWidth="100.0" text="Inventory Level" />
-                                <TableColumn prefWidth="150.0" text="Price/ Cost per Unit" />
+                                <TableColumn fx:id="part_id" prefWidth="75.0" text="Part ID" />
+                                <TableColumn fx:id="part_Name" prefWidth="75.0" text="Part Name" />
+                                <TableColumn fx:id="part_level" prefWidth="100.0" text="Inventory Level" />
+                                <TableColumn fx:id="part_cost" prefWidth="150.0" text="Price/ Cost per Unit" />
                             </columns>
                         </TableView>
                         <HBox alignment="CENTER_RIGHT">
-                            <Button>Add</Button>
+                            <Button fx:id="move_part" onAction="#setMove_part">Add</Button>
                         </HBox>
 
-                        <TableView prefHeight="300.0" prefWidth="400.0">
+                        <TableView fx:id="associatedParts_Table" prefHeight="300.0" prefWidth="400.0">
                             <columns>
-                                <TableColumn prefWidth="75.0" text="Part ID" />
-                                <TableColumn prefWidth="75.0" text="Part Name" />
-                                <TableColumn prefWidth="100.0" text="Inventory Level" />
-                                <TableColumn prefWidth="150.0" text="Price/ Cost per Unit" />
+                                <TableColumn fx:id="asspart_id" prefWidth="75.0" text="Part ID" />
+                                <TableColumn fx:id="asspart_Name" prefWidth="75.0" text="Part Name" />
+                                <TableColumn fx:id="asspart_level" prefWidth="100.0" text="Inventory Level" />
+                                <TableColumn fx:id="asspart_cost" prefWidth="150.0" text="Price/ Cost per Unit" />
                             </columns>
                         </TableView>
                         <HBox alignment="CENTER_RIGHT">
-                            <Button>Remove Associated Part</Button>
+                            <Button fx:id="remove_associated_part" onAction="#setRemove_part">Remove Associated Part</Button>
                         </HBox>
 
                         <HBox alignment="CENTER_RIGHT" spacing="50">
-                            <Button> Save </Button>
-                            <Button fx:id="cancel_part" onAction="#HideModifyProductsForm"> Cancel </Button>
+                            <Button fx:id="save_product" onAction="#SaveModifiedProduct"> Save </Button>
+                            <Button fx:id="cancel_product" onAction="#HideModifyProductsForm"> Cancel </Button>
                         </HBox>
                         <padding>
                             <Insets bottom="0.0" left="30.0" right="0.0" top="0.0" />

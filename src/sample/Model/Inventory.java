@@ -3,20 +3,17 @@
 
 
 
-package sample;
+package sample.Model;
 
 /**
- * author: Brown oichoe
- * The Inventory class is a class that holds rows for parts  and products.
+  @author: Brown oichoe
+  The Inventory class is a class that holds data for both parts  and products.
  */
 
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.scene.control.Alert;
-
-import java.util.ArrayList;
 
 public class Inventory {
 
@@ -26,7 +23,7 @@ public class Inventory {
 
 
     /**
-     addPart method
+     addPart method.
      This adds a new part
      */
 
@@ -37,8 +34,8 @@ public class Inventory {
     }
 
     /**
-     * addProduct method
-     * This adds a new Product
+      addProduct method.
+      This adds a new Product
      */
 
     public static void addProduct(Product newProduct) {
@@ -47,8 +44,8 @@ public class Inventory {
     }
 
     /**
-     * lookupPart-id method
-     * This looks up part using id
+      lookupPart-id method.
+      This looks up part using id
      */
 
 
@@ -65,8 +62,8 @@ public class Inventory {
     }
 
     /**
-     * lookupProduct-id method
-     * This looks up product using id
+     lookupProduct-id method.
+      This looks up product using id
      */
 
     public static Product lookupProduct(int productId) {
@@ -79,8 +76,8 @@ public class Inventory {
     }
 
     /**
-     * lookupPart-name method
-     * This looks up part using name
+      lookupPart-name method.
+      This looks up part using name
      */
 
 
@@ -110,15 +107,39 @@ public class Inventory {
         return filteredParts;
     }
 
-
+    /**
+     lookupProduct-name method.
+     This looks up product using name
+     */
 
     public static ObservableList<Product> lookupProduct(String productName) {
-        return null;
+        ObservableList<Product> filteredParts = FXCollections.observableArrayList();
+        FilteredList<Product> filteredData = new FilteredList<>(allProducts, p -> true);
+        filteredData.setPredicate(filteredPart -> {
+            if (productName == null || productName.isEmpty()) {
+
+
+                return true;
+            }
+
+            if (filteredPart.getName().contains(productName)) {
+
+                return true;
+            } else {
+
+                return false;
+
+            }
+
+        });
+
+        filteredParts.setAll(filteredData);
+        return filteredParts;
     }
 
     /**
-     * updatePart method
-     * This updates a part
+      updatePart method.
+      This updates a part
      */
 
     public static void updatePart(int index,Part selectedPart) {
@@ -128,17 +149,19 @@ public class Inventory {
     }
 
     /**
-     * updateProduct method
-     * This updates a product
+     updateProduct method.
+     This updates a product
      */
 
     public static void updateProduct(int index,Product newProduct) {
-          allProducts.set(index, newProduct);
+
+        allProducts.set(index, newProduct);
     }
 
     /**
-     * deletePart method
-     * This deletes a part
+      deletePart method.
+      This deletes a part.
+      @return boolean
      */
 
      public static boolean deletePart(Part selectedPart) {
@@ -148,18 +171,19 @@ public class Inventory {
      }
 
     /**
-     * deleteProduct method
-     * This deletes a product
+      deleteProduct method.
+      This deletes a product.
+      @return boolean
      */
 
     public static boolean deleteProduct(Product selectedProduct) {
-        allParts.remove(selectedProduct);
+        allProducts.remove(selectedProduct);
         return true;
     }
 
     /**
-     * getAllParts method
-     * @returns ObservableList with Parts
+       getAllParts method.
+       @returns ObservableList with Part.s
      */
 
     public static ObservableList<Part> getAllParts() {
@@ -167,8 +191,8 @@ public class Inventory {
     }
 
     /**
-     * getAllProducts method
-     * @returns ObservableList with Products
+      getAllProducts method.
+      @returns ObservableList with Products.
      */
 
     public static ObservableList<Product> getAllProducts() {

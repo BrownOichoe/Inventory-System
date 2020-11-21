@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Inventory_mainController">
+<AnchorPane prefHeight="600.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.View_Controller.Inventory_mainController">
     <children>
         <VBox prefHeight="515.0" prefWidth="940.0" spacing="15">
             <children>
@@ -47,22 +47,22 @@
                             <VBox alignment="CENTER_LEFT" spacing="10" style=" -fx-border-color:gray; -fx-border-width: 1; -fx-border-style: solid; -fx-border-radius: 5 5 5 5;">
                                 <HBox spacing="170">
                                     <Label>Products</Label>
-                                    <TextField alignment="CENTER_LEFT" promptText="Search by Product Id or Name" style="-fx-prompt-text-fill: gray;" />
+                                    <TextField fx:id="product_search_field" alignment="CENTER_LEFT" promptText="Search by Product Id or Name" style="-fx-prompt-text-fill: gray;" />
                                     <padding>
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
                                 </HBox>
-                                <TableView prefHeight="370.0" prefWidth="370.0">
+                                <TableView fx:id="products_table" prefHeight="370.0" prefWidth="370.0">
                                     <columns>
-                                        <TableColumn prefWidth="75.0" text="Product ID" />
-                                        <TableColumn prefWidth="75.0" text="Product  Name" />
-                                        <TableColumn prefWidth="100.0" text="Inventory Level" />
-                                        <TableColumn prefWidth="120.0" text="Price/ Cost per Unit" />
+                                        <TableColumn fx:id="product_id" prefWidth="75.0" text="Product ID" />
+                                        <TableColumn fx:id="product_Name" prefWidth="75.0" text="Product  Name" />
+                                        <TableColumn fx:id="product_level" prefWidth="100.0" text="Inventory Level" />
+                                        <TableColumn fx:id="product_cost" prefWidth="120.0" text="Price/ Cost per Unit" />
                                     </columns></TableView>
                                 <HBox alignment="TOP_RIGHT" spacing="5">
                                     <Button fx:id="add_product" onAction="#pushToAddProductsForm">Add</Button>
                                     <Button fx:id="modify_product" onAction="#pushToModifyProductsForm">Modify</Button>
-                                    <Button fx:id="delete_product">Delete</Button>
+                                    <Button fx:id="delete_product" onAction="#deleteProduct">Delete</Button>
                         <padding>
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                         </padding>

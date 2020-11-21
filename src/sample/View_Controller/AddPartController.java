@@ -1,51 +1,33 @@
 /**
- *
- *  author: Brown oichoe
- *  The Add Part form
- * •  The In-House and Outsourced radio buttons switch the bottom label to the correct value (Machine ID or Company Name).
- * •  The application auto-generates a unique part ID. The part IDs can be, but do not need to be, contiguous.
- * -  The part ID text field must be disabled.
- * •  The user should be able to enter a part name, inventory level or stock, a price, maximum and minimum values, and company name or machine ID values into active text fields.
- * •  After saving the data, users are automatically redirected to the Main form.
- * •  Canceling or exiting this form redirects users to the Main form.
- *
- * ------------------------------------****************---------------------------------
- * •  The application will not crash when inappropriate user data is entered in the forms; instead, error messages should be generated.
- * •  Min should be less than Max; and Inv should be between those two values.
- *
+
+  @author: Brown oichoe
+   The Add Part form
+   This class creates a new part and adds it to the inventory
+
  */
 
 
-package sample;
+package sample.View_Controller;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+import sample.Model.InHouse;
+import sample.Model.Inventory;
+import sample.Model.Outsourced;
+import sample.Model.Part;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.IllegalCharsetNameException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 public class AddPartController implements Initializable {
-
-    @FXML
-    private Pane anchor_pane;
 
     @FXML
     private RadioButton radio_in_house;
@@ -97,19 +79,30 @@ public class AddPartController implements Initializable {
     private int Id;
 
 
+    /**
+    This method sets the inventory from main.
+
+     */
 
     public void setInventory(Inventory v) {
         this.inventory = v;
     }
 
+    /**
+    This method initializes the controller.
 
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Id = generateUniqueNumber();
         part_id.setText(Integer.toString(Id));
     }
 
+    /**
+    This method listens for the inhouse radiobutton
+    and assigns the correct labels.
 
+     */
     @FXML
     private void In_houseListener(ActionEvent event) {
         if(radio_in_house.isSelected())
@@ -120,6 +113,11 @@ public class AddPartController implements Initializable {
             radio_outsourced.setSelected(false);
     }
 
+    /**
+    This method listens for the outsource  radiobutton
+    and assigns the correct labels.
+
+     */
     @FXML
     private void outSourcedListener(ActionEvent event){
         if(radio_outsourced.isSelected())
@@ -134,13 +132,16 @@ public class AddPartController implements Initializable {
 
 
 
+    /**
+    This method loads the main view and returns part to inventory.
 
+     */
     private void AddPart(Inventory inv) throws IOException {
 
         Parent parent;
         Stage stage;
         stage = (Stage) save_part.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Inventory_main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../Inventory_main.fxml"));
         parent = loader.load();
         Scene scene = new Scene(parent);
         stage.setScene(scene);
@@ -152,18 +153,47 @@ public class AddPartController implements Initializable {
     }
 
 
+   /**
+   This method cancels the part add form if nothing is done
+   and returns to main view.
 
+    */
     public void HideAddPartsForm() throws IOException {
-        Stage stage;
-        Parent root;
-        stage=(Stage) cancel_part.getScene().getWindow();
-        //load up OTHER FXML document
-        FXMLLoader loader=new FXMLLoader();
-        root = loader.load(getClass().getResource("Inventory_main.fxml"));
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+
+
+        ButtonType OK = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        ButtonType CANCEL = new ButtonType("CANCEl", ButtonBar.ButtonData.CANCEL_CLOSE);
+        Alert alert = new Alert(Alert.AlertType.WARNING,
+                "Are You Sure You Want Cancel Adding Part?",OK,CANCEL);
+
+        alert.setTitle("Cancel Adding Part");
+        Optional<ButtonType> result = alert.showAndWait();
+        result.ifPresent(res ->{
+            if (res.equals(OK)) {
+                Stage stage;
+                Parent root;
+                stage=(Stage) cancel_part.getScene().getWindow();
+
+                FXMLLoader loader=new FXMLLoader();
+                try {
+                    root = loader.load(getClass().getResource("Inventory_main.fxml"));
+                    Scene scene = new Scene(root);
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                alert.hide();
+            }
+        });
     }
+
+    /**
+    This method gets the input from the user,validates inputs  and adds it to the inventory.
+
+     */
 
     @FXML
     private void addedPart(ActionEvent event) throws IOException {
@@ -182,8 +212,8 @@ public class AddPartController implements Initializable {
                                  part_Name.getText(),
                                  Double.valueOf(part_price.getText()),
                                  Integer.parseInt(part_Inv.getText()),
-                                 Integer.parseInt(part_Max.getText()),
                                  Integer.parseInt(part_Min.getText()),
+                                 Integer.parseInt(part_Max.getText()),
                                  Integer.parseInt(part_machineId.getText())) ;
 
                          inventory.addPart(p);
@@ -191,8 +221,8 @@ public class AddPartController implements Initializable {
 
 
                      } else {
-                         System.out.println("Min should be less than Max; and Inv should be between those two values");
-                         DialogBox();
+
+                         alertBox("Min should be less than Max; and Inv should be between those two values");
                      }
 
 
@@ -211,16 +241,16 @@ public class AddPartController implements Initializable {
 
 
                      } else {
-                         System.out.println("Min should be less than Max; and Inv should be between those two values");
-                         DialogBox();
+
+                        alertBox("Min should be less than Max; and Inv should be between those two values");
                      }
 
                  } else {
-                     DialogBox();
+                    alertBox("name shouel be letters, Min,Max,price and inv should be numbers");
                  }
              }else {
-                 System.out.println("Fields Cannot be empty");
-                 DialogBox();
+
+                 alertBox("Fields Cannot be empty");
              }
 
 
@@ -229,15 +259,31 @@ public class AddPartController implements Initializable {
     }
 
 
+    /**
+    This is a warning dialog box.
+
+     */
+    private void alertBox(String err) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText("Error");
+        alert.setContentText(err);
+
+        alert.showAndWait();
+    }
 
 
 
+    /**
+    This method checks that the textfields are not empty.
+
+     */
     @FXML
     private boolean checkIfEmpty(List<TextField> ts) {
 
         boolean isEmpty = false;
 
-        //add part id
+
         for (TextField textField: ts) {
             if(textField.getText().trim().length() == 0)
                 isEmpty = true;
@@ -246,6 +292,11 @@ public class AddPartController implements Initializable {
         return isEmpty;
     }
 
+
+    /**
+    This method validates strings and integers and doubles as the needed inputs.
+
+     */
 
     @FXML
     private boolean validationPassed(List<TextField> ts) throws IOException {
@@ -267,8 +318,6 @@ public class AddPartController implements Initializable {
 
                        if(radio_in_house.isSelected()) {
                            Integer.valueOf(textField.getText());
-                       }else {
-                           System.out.println("This is the company Name");
                        }
 
                    }else {
@@ -276,13 +325,13 @@ public class AddPartController implements Initializable {
 
 
                        if(Character.isDigit(Id.charAt(0))) {
-                           System.out.println("This is " + Id + " not  a String");
+
                            isValid = false;
 
                        } else  if (Id.length() > 1){
                            for(int i = 0 ; i < Id.length() ; i++) {
                                 if(Character.isDigit(Id.charAt(i))) {
-                                    System.out.println("This is " + Id.charAt(i) + " not  a String");
+
                                     isValid = false;
                                     return isValid;
                                 } else {
@@ -292,7 +341,7 @@ public class AddPartController implements Initializable {
                            }
                        }else {
                            isValid = true;
-                           System.out.println("This is " + Id + "  a String");
+
                        }
 
 
@@ -301,7 +350,7 @@ public class AddPartController implements Initializable {
 
 
                } catch (NumberFormatException e) {
-                   System.out.println("The value :  " + Id + " is not a number");
+
                    isValid = false;
 
                }
@@ -311,6 +360,11 @@ public class AddPartController implements Initializable {
             return  isValid;
     }
 
+    /**
+    This method generates unique ids for the parts.
+
+     */
+
     @FXML
     private Integer generateUniqueNumber() {
 
@@ -318,7 +372,7 @@ public class AddPartController implements Initializable {
         Integer Id = ints.nextInt(999999);
 
          inventory.getAllParts().forEach((item) -> {
-             System.out.println(item.getId());
+
              if (item.getId()  == Id ){
                  ints.nextInt();
              };
@@ -328,6 +382,14 @@ public class AddPartController implements Initializable {
         return Id;
     }
 
+
+    /**
+    This method is part of the validation -methods checks for the input values for max,min and inv
+    max>inv>min.
+
+    @returns boolean
+
+     */
     @FXML
     private boolean checkMinMAxInv(int min, int max, int inv) {
 
@@ -340,16 +402,6 @@ public class AddPartController implements Initializable {
     }
 
 
-    @FXML
-    private void DialogBox() throws IOException {
-        Parent Form = FXMLLoader.load(getClass().getResource("DialogBox.fxml"));
-        Scene scene = new Scene(Form);
-        Stage  stage = new Stage();
-        stage.setTitle("Error Message");
-        stage.setScene(scene);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.showAndWait();
-    }
 
 
 
