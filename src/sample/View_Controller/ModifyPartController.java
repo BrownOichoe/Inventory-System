@@ -27,6 +27,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+  This class provides functionality to modify and edit a arts features.
+ */
+
 public class ModifyPartController implements Initializable {
 
     @FXML
@@ -76,7 +80,7 @@ public class ModifyPartController implements Initializable {
 
     /**
     This sets up the part in the correct texfields to be  modified by user.
-
+    @param p This is the selected part to be modified
      */
     public void setPart(Part p) {
 
@@ -114,7 +118,7 @@ public class ModifyPartController implements Initializable {
 
     /**
     This method gets the inventory from the main controller.
-
+     @param inv This is the inventory
      */
     public void getInventory(Inventory inv) {
 
@@ -153,7 +157,7 @@ public class ModifyPartController implements Initializable {
 
     /**
     This method gets user input and updates the required fields.
-
+    @param ts This is a textfield that has been selected by user to update info
      */
     public void setValues(TextField ts) {
         if(ts.getId().equals(part_Id.getId())) {

@@ -28,6 +28,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 
+/**
+This controller extends the main functionality to navigate to other controllers and set up the tableviews
+ */
 public class Inventory_mainController  implements Initializable  {
 
 
@@ -102,7 +105,7 @@ public class Inventory_mainController  implements Initializable  {
 
     /**
     This method sets the inventory form main.
-
+    @param v this is a passed inventory
      */
     public void setInventory(Inventory v) {
         this.inventory = v;
@@ -111,7 +114,7 @@ public class Inventory_mainController  implements Initializable  {
 
     /**
     This method gets the updated part and updates it.
-
+    @param p -This is a part item
     */
     public void setSelectedPart(Part p) {
 
@@ -126,7 +129,7 @@ public class Inventory_mainController  implements Initializable  {
 
     /**
     This method gets the updated product and updates it.
-
+    @param product - this is a product item
      */
     public void setSelectedProduct(Product product) {
 
@@ -224,7 +227,18 @@ public class Inventory_mainController  implements Initializable  {
     }
 
     /**
-    This method initializes the search function and returns the typed Parst input if found.
+    This method initializes the search function and returns the typed Parts input if found.
+
+     Part G a: This function can result in a logical error where a user is not able to search for both
+     products using name and id correctly. First,it can result in a number exception error,a return of the
+     wrong item or no items,or cause the data not to be populated.To fix this - add a listener to the search_field
+     to listen for changes ,initialise an empty observable array to hold the return values-This is helpful because
+     searching with an part Id only returns a part and the tableview only accepts observable lists Then include the
+     isNumeric function to determine whether the input is a digit or string so that we can use the appropriate functions.
+     Check whether the search_field is empty to avoid the number exception error when trying to convert it to integer.
+     To synchronize both part id and name - add the id to an observable list and return a specific item - The lookup
+     part overloaded method returns a specific instance while the name returns a List.
+
 
      */
     public void SearchParts() {
@@ -239,7 +253,6 @@ public class Inventory_mainController  implements Initializable  {
                 Part p = inventory.lookupPart(number);
 
                 if(p == null){
-                    System.out.println("Table is empty");
                     table_message.setText("Table is empty");
                     parts_table.setItems(null);
                     parts_table.setPlaceholder(new Label("Part Not Found"));
@@ -264,7 +277,8 @@ public class Inventory_mainController  implements Initializable  {
 
    /**
    validates digit inputs.
-
+   @param str - The value to be checked  if numeric
+    @return boolean
     */
     public static boolean isNumeric(String str)
     {

@@ -1,8 +1,12 @@
 package sample.Model;
 
 /**
-  This Outsourced class hold's info whether a Part is outsourced
-  @author: Brown Oichoe
+
+ @author brownoichoe
+ */
+
+/**
+ This Out-sourced class hold's info whether a Part is outsourced.
  */
 
 public class Outsourced extends Part {
@@ -12,6 +16,13 @@ public class Outsourced extends Part {
     /**
       Constructor.
       @param companyName The InHouse part machine id
+     @param price The InHouse part price
+     @param max  The InHouse part max
+     @param min  The InHouse part min
+     @param id  The InHouse part id
+     @param stock The InHouse part inventory level
+     @param name The InHouse part name
+
      */
 
     public Outsourced(int id,String name,Double price,int stock, int min, int max, String companyName) {

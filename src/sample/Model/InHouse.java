@@ -2,8 +2,11 @@ package sample.Model;
 
 
 /**
-  This InHouse class hold's info whether a Part is in house
-  @author: Brown Oichoe
+ @author brownoichoe
+ */
+
+/**
+ This In-House class hold's info whether a Part is in house.
  */
 public class InHouse extends Part {
     //Fields
@@ -12,6 +15,12 @@ public class InHouse extends Part {
     /**
       Constructor.
       @param machineId The InHouse part machine id
+     @param name
+     @param stock
+     @param id
+     @param min
+     @param max
+     @param price
      */
 
     public InHouse(int id, String name,Double price,int stock,int min, int max,int machineId) {

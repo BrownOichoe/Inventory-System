@@ -4,8 +4,8 @@ package sample.Model;
  */
 
 /**
- *
- * @author Brown Oichoe
+ * This is an abstract class that defines the part
+ * @author brownoichoe
  */
 public abstract class Part {
     private int id;
@@ -14,6 +14,15 @@ public abstract class Part {
     private int stock;
     private int min;
     private int max;
+    /**
+    @param id
+     @param max
+     @param min
+     @param stock
+     @param name
+     @param price
+     */
+
     public Part(int id, String name, double price, int stock, int min, int max) {
         this.id = id;
         this.name = name;

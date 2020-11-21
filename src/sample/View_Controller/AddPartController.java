@@ -26,7 +26,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-
+/**
+This class provides functionality of adding a product.
+ */
 public class AddPartController implements Initializable {
 
     @FXML
@@ -81,7 +83,7 @@ public class AddPartController implements Initializable {
 
     /**
     This method sets the inventory from main.
-
+    @param v This is an inventory item
      */
 
     public void setInventory(Inventory v) {
@@ -156,7 +158,7 @@ public class AddPartController implements Initializable {
    /**
    This method cancels the part add form if nothing is done
    and returns to main view.
-
+    @throws  java.io.IOException catches input out put exceptions
     */
     public void HideAddPartsForm() throws IOException {
 

@@ -28,6 +28,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+This class provides functionality to modify a product.
+ */
+
 public class ModifyProductController  implements Initializable {
 
 
@@ -110,7 +114,7 @@ public class ModifyProductController  implements Initializable {
 
     /**
     This method sets the inventory from main.
-
+     @param inv This initialises the inventory and is passed from main
      */
     public void setInventory(Inventory inv) {
         this.inventory = inv;
@@ -119,7 +123,7 @@ public class ModifyProductController  implements Initializable {
 
     /**
      This method updates textfields with the selected input.
-
+     @param p - This is product p that has been selected to be modified and updated
      */
     public void setProduct(Product p) {
         this.product = p;
@@ -169,7 +173,7 @@ public class ModifyProductController  implements Initializable {
     }
     /**
     This method cancels the Modify Products form.
-
+     @throws  java.io.IOException This catches an exception thrown during input output operations
      */
     public void HideModifyProductsForm() throws IOException {
 
@@ -243,6 +247,8 @@ public class ModifyProductController  implements Initializable {
 
     /**
     This method validates that an input is digits.
+     @param str - Passed string to check whether it is numeric
+     @return boolean
      */
     public static boolean isNumeric(String str) {
         for (char c : str.toCharArray()) {
@@ -302,7 +308,9 @@ public class ModifyProductController  implements Initializable {
 
     }
 
-    /** This method updates products old values. */
+    /** This method updates products old values.
+     *
+     * @param ts  This is a textfield that has been selected by user to update info*/
     public void setValues(TextField ts) {
         if (ts.getId().equals(product_id.getId())) {
             product.setId(Integer.parseInt(ts.getText()));

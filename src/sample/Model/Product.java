@@ -3,17 +3,22 @@ package sample.Model;
 
 /**
 
- @author: Brown Oichoe
- The Product class is a class that holds information about products.
+
+ @author brownoichoe
 
  */
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ *  This class defines a products
+ */
 public class Product {
 
-    //Fields
+    /**
+     * @value associatedParts initializes the associated parts for the product
+     */
     private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
     private int id;
     private String name;
@@ -154,6 +159,7 @@ public class Product {
     /**
       addAssociatedPart method.
       adds part to products list.
+     @param part This is the associated part for the Product
      */
 
     public void addAssociatedPart(Part part) {
@@ -164,7 +170,9 @@ public class Product {
     /**
       deleteAssociatePart method.
       deletes part form products.
-      @return boolean
+
+     @param selectedAssociatedPart This is the selected associated part
+     @return boolean
      */
 
     public boolean deleteAssociatePart(Part selectedAssociatedPart) {
@@ -175,7 +183,7 @@ public class Product {
 
     /**
       getAllAssociatedParts method.
-      @returns  The parts List.
+      @return  getAllAssociatedparts
      */
 
     public ObservableList<Part> getAllAssociatedParts() {

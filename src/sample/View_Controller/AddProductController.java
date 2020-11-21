@@ -27,6 +27,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
+/**
+This class provides functionality for adding products.
+ */
+
 public class AddProductController implements Initializable {
 
     @FXML
@@ -108,7 +112,7 @@ public class AddProductController implements Initializable {
 
     /**
     This method sets the inventory from main.
-
+     @param  inv - This is an inventory item
      */
 
     public void setInventory(Inventory inv) {
@@ -320,7 +324,8 @@ public class AddProductController implements Initializable {
     }
     /**
     This method validates the inventory lookup.
-
+    @param str - value to be checked if numeric
+     @return boolean
      */
     public static boolean isNumeric(String str)
     {

@@ -6,8 +6,10 @@
 package sample.Model;
 
 /**
-  @author: Brown oichoe
-  The Inventory class is a class that holds data for both parts  and products.
+
+
+ @author brownoichoe
+
  */
 
 
@@ -15,9 +17,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
+/**
+  The Inventory class is a class that holds data for both parts  and products.
+ */
+
 public class Inventory {
 
-    //Fields
+    /**
+     * @value allParts
+     * @value allProducts
+     */
     private static ObservableList<Part> allParts = FXCollections.observableArrayList();
     private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
 
@@ -25,6 +34,7 @@ public class Inventory {
     /**
      addPart method.
      This adds a new part
+     @param newPart This a new created part
      */
 
     public static void addPart(Part newPart) {
@@ -36,6 +46,7 @@ public class Inventory {
     /**
       addProduct method.
       This adds a new Product
+     @param newProduct This a new created Product
      */
 
     public static void addProduct(Product newProduct) {
@@ -46,6 +57,8 @@ public class Inventory {
     /**
       lookupPart-id method.
       This looks up part using id
+     @param partId This is a the part id
+     @return null
      */
 
 
@@ -64,6 +77,8 @@ public class Inventory {
     /**
      lookupProduct-id method.
       This looks up product using id
+     @param productId This is the product id
+     @return null
      */
 
     public static Product lookupProduct(int productId) {
@@ -78,6 +93,8 @@ public class Inventory {
     /**
       lookupPart-name method.
       This looks up part using name
+     @param partName This is the part Name
+     @return  parts - ObservableList
      */
 
 
@@ -110,6 +127,8 @@ public class Inventory {
     /**
      lookupProduct-name method.
      This looks up product using name
+     @param productName This is the Product name
+     @return product observable list
      */
 
     public static ObservableList<Product> lookupProduct(String productName) {
@@ -140,6 +159,8 @@ public class Inventory {
     /**
       updatePart method.
       This updates a part
+     @param selectedPart This is a selected part
+     @param index  This is a selected Index
      */
 
     public static void updatePart(int index,Part selectedPart) {
@@ -151,6 +172,8 @@ public class Inventory {
     /**
      updateProduct method.
      This updates a product
+     @param newProduct  This is a selectedproduct
+     @param index  This is the selected's product index
      */
 
     public static void updateProduct(int index,Product newProduct) {
@@ -162,6 +185,7 @@ public class Inventory {
       deletePart method.
       This deletes a part.
       @return boolean
+     @param selectedPart  This is a selected part
      */
 
      public static boolean deletePart(Part selectedPart) {
@@ -173,7 +197,8 @@ public class Inventory {
     /**
       deleteProduct method.
       This deletes a product.
-      @return boolean
+     @param selectedProduct  This is a Selected Product
+     @return boolean
      */
 
     public static boolean deleteProduct(Product selectedProduct) {
@@ -183,7 +208,8 @@ public class Inventory {
 
     /**
        getAllParts method.
-       @returns ObservableList with Part.s
+       @return getAllParts
+
      */
 
     public static ObservableList<Part> getAllParts() {
@@ -192,7 +218,7 @@ public class Inventory {
 
     /**
       getAllProducts method.
-      @returns ObservableList with Products.
+      @return getAllProducts
      */
 
     public static ObservableList<Product> getAllProducts() {

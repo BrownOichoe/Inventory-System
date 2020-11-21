@@ -15,6 +15,24 @@ import sample.Model.Inventory;
 import sample.Model.Outsourced;
 import sample.View_Controller.Inventory_mainController;
 
+/**
+ This is the main class. This class initializes the application.
+
+
+ Part G -b:
+
+ To extend the functionality of this project I would include a data analysis feature so that users can be able to quickly search for
+ the most used parts and the least used parts. This woudl be important because it would :
+  1) Ensure profitability - since it would mean the demand for that product is high,
+  2) Reduce Costs - Since this would mean parts in demand would demand a higher budget than those with less demand -Therefore
+    the company doesn't spend resources on the least effective parts,
+  3) The data analysis component would also be good at showing trends and making predictions on what direction the company should take for maximum
+     profitability.
+
+
+
+ */
+
 public class Main extends Application  {
 
 
