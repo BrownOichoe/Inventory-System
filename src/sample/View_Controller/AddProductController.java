@@ -142,7 +142,7 @@ public class AddProductController implements Initializable {
 
                 FXMLLoader loader=new FXMLLoader();
                 try {
-                    root = loader.load(getClass().getResource("Inventory_main.fxml"));
+                    root = loader.load(getClass().getResource("../Inventory_main.fxml"));
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
@@ -210,7 +210,8 @@ public class AddProductController implements Initializable {
                             alertBox("Price of a product cannot be less than the cost of the parts");
                         }
                     } else {
-                        alertBox("Product must have at least One Part");
+                        inventory.addProduct(p);
+                        AddNewProduct(inventory);
                     }
 
 

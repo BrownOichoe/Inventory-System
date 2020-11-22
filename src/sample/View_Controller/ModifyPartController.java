@@ -272,11 +272,11 @@ public class ModifyPartController implements Initializable {
 
                     stage=(Stage) cancel_part.getScene().getWindow();
                     FXMLLoader loader=new FXMLLoader();
-                    root = loader.load(getClass().getResource("Inventory_main.fxml"));
+                    root = loader.load(getClass().getResource("../Inventory_main.fxml"));
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
-                } catch (IOException e) {
+                } catch (NullPointerException | IOException e) {
                     e.printStackTrace();
                 }
 

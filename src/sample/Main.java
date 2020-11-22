@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import sample.Model.InHouse;
 import sample.Model.Inventory;
 import sample.Model.Outsourced;
+import sample.Model.Product;
 import sample.View_Controller.Inventory_mainController;
 
 /**
@@ -42,7 +43,7 @@ public class Main extends Application  {
     public void start(Stage primaryStage) throws Exception{
         Inventory inv = new Inventory();
 
-        /*inv.addPart(new InHouse(1,"Screw",600.00,100,50,200,5));
+        inv.addPart(new InHouse(1,"Screw",600.00,100,50,200,5));
         inv.addPart(new Outsourced(2,"Nail",300.00,150,50,200,"NailedIt Ltd"));
         inv.addPart(new InHouse(3,"Glue",200.00,200,50,250,23));
         inv.addPart(new InHouse(4,"Door Knob",669.00,250,50,300,32));
@@ -57,7 +58,7 @@ public class Main extends Application  {
         inv.addProduct(new Product(1,"Chair",100.00,50 , 44, 104));
         inv.addProduct(new Product(2,"Door",250.00,57 , 33, 98));
         inv.addProduct(new Product(3,"Cabinet",370.00,89 , 77, 245));
-        */
+
 
         FXMLLoader loader =  new FXMLLoader(getClass().getResource("Inventory_main.fxml"));
         Parent parent;

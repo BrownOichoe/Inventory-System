@@ -202,8 +202,17 @@ public class Inventory {
      */
 
     public static boolean deleteProduct(Product selectedProduct) {
-        allProducts.remove(selectedProduct);
-        return true;
+
+
+        if(selectedProduct.getAllAssociatedParts().isEmpty()){
+            selectedProduct.getAllAssociatedParts().toString();
+            return true;
+        }else {
+            //allProducts.remove(selectedProduct);
+            selectedProduct.getAllAssociatedParts().toString();
+            return false;
+        }
+
     }
 
     /**

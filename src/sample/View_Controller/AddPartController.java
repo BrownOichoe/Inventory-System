@@ -178,7 +178,7 @@ public class AddPartController implements Initializable {
 
                 FXMLLoader loader=new FXMLLoader();
                 try {
-                    root = loader.load(getClass().getResource("Inventory_main.fxml"));
+                    root = loader.load(getClass().getResource("../Inventory_main.fxml"));
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
@@ -235,8 +235,8 @@ public class AddPartController implements Initializable {
                                  part_Name.getText(),
                                  Double.valueOf(part_price.getText()),
                                  Integer.parseInt(part_Inv.getText()),
-                                 Integer.parseInt(part_Max.getText()),
                                  Integer.parseInt(part_Min.getText()),
+                                 Integer.parseInt(part_Max.getText()),
                                  part_machineId.getText());
                          inventory.addPart(p);
                          AddPart(inventory);

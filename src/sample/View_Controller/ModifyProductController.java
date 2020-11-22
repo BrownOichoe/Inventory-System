@@ -9,6 +9,7 @@ package sample.View_Controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -177,7 +178,8 @@ public class ModifyProductController  implements Initializable {
      */
     public void HideModifyProductsForm() throws IOException {
 
-        ButtonType OK = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+
+       ButtonType OK = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
         ButtonType CANCEL = new ButtonType("CANCEl", ButtonBar.ButtonData.CANCEL_CLOSE);
         Alert alert = new Alert(Alert.AlertType.WARNING,
                 "Are You Sure You Want cancel Modifying Product",OK,CANCEL);
@@ -187,13 +189,15 @@ public class ModifyProductController  implements Initializable {
         result.ifPresent(res ->{
             if (res.equals(OK)) {
 
+
+
                 try {
                     Stage stage;
                     Parent root;
 
                     stage=(Stage) cancel_product.getScene().getWindow();
                     FXMLLoader loader=new FXMLLoader();
-                    root = loader.load(getClass().getResource("Inventory_main.fxml"));
+                    root = loader.load(getClass().getResource("../Inventory_main.fxml"));
                     Scene scene = new Scene(root);
                     stage.setScene(scene);
                     stage.show();
@@ -201,10 +205,13 @@ public class ModifyProductController  implements Initializable {
                     e.printStackTrace();
                 }
 
+
             } else {
                 alert.hide();
             }
         });
+
+
     }
 
 

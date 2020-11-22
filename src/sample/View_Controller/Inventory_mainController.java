@@ -207,6 +207,7 @@ public class Inventory_mainController  implements Initializable  {
 
                     products_table.setItems(null);
                     products_table.setPlaceholder(new Label("Product Not Found"));
+                    alertBox("Part not Found");
                 }else {
 
                     foundItems.add(p);
@@ -215,7 +216,11 @@ public class Inventory_mainController  implements Initializable  {
                 }
 
             } else if (!isNumeric(product_search_field.getText()) && !product_search_field.getText().isEmpty()){
-                products_table.setItems(inventory.lookupProduct(product_search_field.getText()));
+                if(inventory.lookupPart(product_search_field.getText()).isEmpty()){
+                    alertBox("Product not Found");
+                }else{
+                    products_table.setItems(inventory.lookupProduct(product_search_field.getText()));
+                }
             }else {
                 products_table.setItems(inventory.getAllProducts());
             }
@@ -253,9 +258,10 @@ public class Inventory_mainController  implements Initializable  {
                 Part p = inventory.lookupPart(number);
 
                 if(p == null){
-                    table_message.setText("Table is empty");
+
                     parts_table.setItems(null);
                     parts_table.setPlaceholder(new Label("Part Not Found"));
+                    alertBox("Product not Found");
                 }else {
 
                     foundItems.add(p);
@@ -264,7 +270,13 @@ public class Inventory_mainController  implements Initializable  {
                 }
 
             } else if (!isNumeric(part_search_field.getText()) && !part_search_field.getText().isEmpty()){
-                parts_table.setItems(inventory.lookupPart(part_search_field.getText()));
+
+                if(inventory.lookupPart(part_search_field.getText()).isEmpty()){
+                    alertBox("Product not Found");
+                }else{
+                    parts_table.setItems(inventory.lookupPart(part_search_field.getText()));
+                }
+
             }else {
                 parts_table.setItems(inventory.getAllParts());
             }
@@ -424,9 +436,16 @@ public class Inventory_mainController  implements Initializable  {
         Product selectedProduct = products_table.getSelectionModel().getSelectedItem();
 
         if (selectedProduct != null) {
-            inventory.deleteProduct(selectedProduct);
-            products_table.getItems().remove(selectedProduct);
-            products_table.refresh();
+            if(inventory.deleteProduct(selectedProduct)) {
+                inventory.getAllProducts().remove(selectedProduct);
+                products_table.getItems().remove(selectedProduct);
+                products_table.refresh();
+            }else {
+                alertBox("Product has Associated Parts Cannot be Deleted");
+
+
+            };
+
         }else {
             alertBox("Please select product to delete");
         }
