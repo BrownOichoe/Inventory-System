@@ -475,7 +475,7 @@ public class AddProductController implements Initializable {
     @FXML
     private boolean checkMinMAxInv(int min, int max, int inv) {
 
-        if (inv > min) {
+        if (inv >= min) {
             return max > inv;
         } else {
             return false;

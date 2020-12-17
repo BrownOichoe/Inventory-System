@@ -9,7 +9,6 @@ package sample.View_Controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -123,7 +122,7 @@ public class ModifyProductController  implements Initializable {
 
 
     /**
-     This method updates textfields with the selected input.
+     This method updates text fields with the selected input.
      @param p - This is product p that has been selected to be modified and updated
      */
     public void setProduct(Product p) {
@@ -180,7 +179,7 @@ public class ModifyProductController  implements Initializable {
 
 
        ButtonType OK = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        ButtonType CANCEL = new ButtonType("CANCEl", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType CANCEL = new ButtonType("CANCEL", ButtonBar.ButtonData.CANCEL_CLOSE);
         Alert alert = new Alert(Alert.AlertType.WARNING,
                 "Are You Sure You Want cancel Modifying Product",OK,CANCEL);
 
@@ -271,10 +270,10 @@ public class ModifyProductController  implements Initializable {
         partTableView.refresh();
 
         partTableView.setItems(this.inventory.getAllParts());
-        part_id.setCellValueFactory(new PropertyValueFactory<Part, Integer>("id"));
-        part_cost.setCellValueFactory(new PropertyValueFactory<Part, Double>("price"));
-        part_level.setCellValueFactory(new PropertyValueFactory<Part, Integer>("stock"));
-        part_Name.setCellValueFactory(new PropertyValueFactory<Part, String>("name"));
+        part_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        part_cost.setCellValueFactory(new PropertyValueFactory<>("price"));
+        part_level.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        part_Name.setCellValueFactory(new PropertyValueFactory<>("name"));
     }
     /**
     This method sets the associated parts table.
@@ -284,10 +283,10 @@ public class ModifyProductController  implements Initializable {
         associatedParts_Table.refresh();
         associatedParts_Table.setItems(associatedItems);
         associatedParts_Table.setPlaceholder(new Label("No parts associated with this product"));
-        asspart_id.setCellValueFactory(new PropertyValueFactory<Part, Integer>("id"));
-        asspart_cost.setCellValueFactory(new PropertyValueFactory<Part, Double>("price"));
-        asspart_level.setCellValueFactory(new PropertyValueFactory<Part, Integer>("stock"));
-        asspart_Name.setCellValueFactory(new PropertyValueFactory<Part, String>("name"));
+        asspart_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        asspart_cost.setCellValueFactory(new PropertyValueFactory<>("price"));
+        asspart_level.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        asspart_Name.setCellValueFactory(new PropertyValueFactory<>("name"));
     }
 
     /**
@@ -300,18 +299,16 @@ public class ModifyProductController  implements Initializable {
         setAssociatedParts_Table();
         setSearch_part();
         List<TextField> textFields = Arrays.asList(product_name,product_price,product_min,product_max,product_inv);
-        textFields.forEach(textField -> {
-            textField.textProperty().addListener((obs,old,newWord)->{
-                // TODO here
+        textFields.forEach(textField -> textField.textProperty().addListener((obs, old, newWord)->{
+            // TODO here
 
-                try {
-                    textField.setText(newWord);
-                    setValues(textField);
-                }catch (NumberFormatException e){
-                    System.out.println("I got you error");
-                }
-            });
-        });
+            try {
+                textField.setText(newWord);
+                setValues(textField);
+            }catch (NumberFormatException e){
+                System.out.println("I got you error");
+            }
+        }));
 
     }
 
@@ -360,7 +357,7 @@ public class ModifyProductController  implements Initializable {
 
                 }
                 else{
-                    alertBox("Min should be less than Max. Inv SHoul be less than Max and Min");
+                    alertBox("Min should be less than Max. Inv Should be less than Max and Min");
                 }
             }else{
                 alertBox("Name should be letters, Inv,Max,Min and Price should be numbers");
@@ -407,7 +404,7 @@ public class ModifyProductController  implements Initializable {
     @FXML
     private boolean checkMinMAxInv(int min, int max, int inv) {
 
-        if (inv > min) {
+        if (inv >= min) {
             return max > inv;
         } else {
             return false;
@@ -418,7 +415,7 @@ public class ModifyProductController  implements Initializable {
     /** This method validates strings and integers and doubles as the needed inputs. */
 
     @FXML
-    private boolean validationPassed(List<TextField> ts) throws IOException {
+    private boolean validationPassed(List<TextField> ts) {
 
         boolean isValid = true;
 
@@ -443,8 +440,7 @@ public class ModifyProductController  implements Initializable {
                     } else  if (Id.length() > 1){
                         for(int i = 0 ; i < Id.length() ; i++) {
                             if(Character.isDigit(Id.charAt(i))) {
-                                isValid = false;
-                                return isValid;
+                                return false;
                             } else {
                                 isValid = true;
                             }

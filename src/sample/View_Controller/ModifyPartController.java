@@ -321,7 +321,7 @@ public class ModifyPartController implements Initializable {
 
                 }
                 else{
-                    alertBox("Min should be less than Max. Inv SHoul be less than Max and Min");
+                    alertBox("Min should be less than Max. Inv Should be less than Max and Min");
                 }
             }else{
                 alertBox("Name should be letters, Inv,Max,Min and Price should be numbers");
@@ -376,7 +376,7 @@ public class ModifyPartController implements Initializable {
     @FXML
     private boolean checkMinMAxInv(int min, int max, int inv) {
 
-        if (inv > min) {
+        if (inv >= min) {
             return max > inv;
         } else {
             return false;

@@ -43,7 +43,7 @@ public class Main extends Application  {
     public void start(Stage primaryStage) throws Exception{
         Inventory inv = new Inventory();
 
-        inv.addPart(new InHouse(1,"Screw",600.00,100,50,200,5));
+        Inventory.addPart(new InHouse(1,"Screw",600.00,100,50,200,5));
         inv.addPart(new Outsourced(2,"Nail",300.00,150,50,200,"NailedIt Ltd"));
         inv.addPart(new InHouse(3,"Glue",200.00,200,50,250,23));
         inv.addPart(new InHouse(4,"Door Knob",669.00,250,50,300,32));
